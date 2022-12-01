@@ -1,12 +1,9 @@
-﻿
-using System;
-using System.IO;
-using System.Linq;
+﻿var maxList = parseFile();
 
-day1();
-day2();
+Console.WriteLine($"Day 1-1 : {maxList.Max()}");
+Console.WriteLine($"Day 1-2 : {maxList.OrderDescending().Take(3).Sum()}");
 
-void day1()
+IList<int> parseFile()
 {
     var lines = File.ReadAllText(@"input1.txt");
 
@@ -16,20 +13,5 @@ void day1()
     {
         maxList.Add(group.Split("\n").Select(x => int.Parse(x)).Sum());
     }
-
-    Console.WriteLine(maxList.Max());
-}
-
-void day2()
-{
-    var lines = File.ReadAllText(@"input1.txt");
-
-    var groups = lines.Split(Environment.NewLine + Environment.NewLine);
-    List<int> maxList = new();
-    foreach(var group in groups)
-    {
-        maxList.Add(group.Split("\n").Select(x => int.Parse(x)).Sum());
-    }
-
-    Console.WriteLine(maxList.OrderDescending().Take(3).Sum());
+    return maxList;
 }

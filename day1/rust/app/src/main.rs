@@ -17,7 +17,7 @@ fn main() {
     }
         
     let res_max: Option<&i32> = sum_list.iter().max();
-    println!("Day 1-1: {:?}", res_max.unwrap());
+    println!("Day 1-1: {}", res_max.unwrap());
 
     sum_list.sort();
     sum_list.reverse();

@@ -3,31 +3,24 @@ byte[,] treeMap;
 
 parseFile();
 
-Console.WriteLine($"Part 1 : {Part1()}");
-Console.WriteLine($"Part 2 : {Part2()}");
+(int part1, int part2) = Parts();
 
-int Part1()
+Console.WriteLine($"Part 1 : {part1}");
+Console.WriteLine($"Part 2 : {part2}");
+
+(int, int) Parts()
 {
-    var count = (_width + _height - 2) * 2;
-
-    for (var y=1; y<_height-1; y++)
-        for (var x=1; x<_width-1; x++)
-            if (IsVisible(x,y)) count++;
-
-    return count;
-}
-
-int Part2()
-{
-    var max = int.MinValue;
+    var part1score = (_width + _height - 2) * 2;
+    var part2score = int.MinValue;
 
     for (var y=1; y<_height-1; y++)
         for (var x=1; x<_width-1; x++)
         {
-            max = Math.Max(max, ViewScore(x, y));
+            if (IsVisible(x,y)) part1score++;
+            part2score = Math.Max(part2score, ViewScore(x, y));
         }
 
-    return max;
+    return (part1score, part2score);
 }
 
 bool IsVisible(int x, int y)

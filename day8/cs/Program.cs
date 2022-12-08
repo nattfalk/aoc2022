@@ -12,10 +12,7 @@ int Part1()
 
     for (var y=1; y<_height-1; y++)
         for (var x=1; x<_width-1; x++)
-        {
-            if (IsVisible(x,y))
-                count++;
-        }
+            if (IsVisible(x,y)) count++;
 
     return count;
 }
@@ -38,60 +35,51 @@ bool IsVisible(int x, int y)
     bool top = true, bottom = true, left = true, right = true;
 
     for (var i=y-1; i>=0; i--)
-        if (treeMap[i,x] >= treeMap[y,x])
-        {
-            top = false;
+        if (IsBlocking(x, y, x, i, ref top))
             break;
-        }
     for (var i=y+1; i<_height; i++)
-        if (treeMap[i,x] >= treeMap[y,x])
-        {
-            bottom = false;
+        if (IsBlocking(x, y, x, i, ref bottom))
             break;
-        }
     for (var i=x-1; i>=0; i--)
-        if (treeMap[y,i] >= treeMap[y,x])
-        {
-            left = false;
+        if (IsBlocking(x, y, i, y, ref left))
             break;
-        }
     for (var i=x+1; i<_width; i++)
-        if (treeMap[y,i] >= treeMap[y,x])
-        {
-            right = false;
+        if (IsBlocking(x, y, i, y, ref right))
             break;
-        }
     return top || bottom || left || right;
+
+    bool IsBlocking(int xs, int ys, int xd, int yd, ref bool block)
+    {
+        if (treeMap[yd,xd] >= treeMap[ys,xs])
+        {
+            block = false;
+            return true;
+        }
+        return false;
+    }
 }
 
 int ViewScore(int x, int y)
 {
     int top = 0, bottom = 0, left = 0, right = 0;
     for (var i=y-1; i>=0; i--)
-        if (Calc(x, y, x, i, ref top))
+        if (IsBlocking(x, y, x, i, ref top))
             break;
     for (var i=y+1; i<_height; i++)
-        if (Calc(x, y, x, i, ref bottom))
+        if (IsBlocking(x, y, x, i, ref bottom))
             break;
     for (var i=x-1; i>=0; i--)
-        if (Calc(x, y, i, y, ref left))
+        if (IsBlocking(x, y, i, y, ref left))
             break;
     for (var i=x+1; i<_width; i++)
-        if (Calc(x, y, i, y, ref right))
+        if (IsBlocking(x, y, i, y, ref right))
             break;
     return top * bottom * left * right;
 
-    bool Calc(int xs, int ys, int xd, int yd, ref int cnt)
+    bool IsBlocking(int xs, int ys, int xd, int yd, ref int cnt)
     {
-        if (treeMap[yd,xd] < treeMap[ys,xs])
-        {
-            cnt++;
-        }
-        else if (treeMap[yd,xd] >= treeMap[ys,xs])
-        {
-            cnt++;
-            return true;
-        }
+        cnt++;
+        if (treeMap[yd,xd] >= treeMap[ys,xs]) return true;
         return false;
     }
 }
